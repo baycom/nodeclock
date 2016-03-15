@@ -4,6 +4,10 @@
 	var timerStarted;
 	var timerStopped;
 	var timerFormat;
+	var timerMode;
+	var timerSounds;
+	var timerLength;
+	var interval;
 	var nowms;
 	var secs;
 	var hours;
@@ -12,8 +16,8 @@
 	var uuid;
 	var socket = io();
 	var timeSkew = 0;
-	var beep1 = new Audio("/media/beep-1.mp3");
-	var beep4 = new Audio("/media/countdown.mp3");
+	var beep1 = new Audio("media/beep-1.mp3");
+	var beep4 = new Audio("media/countdown.mp3");
 	var intervalTimer;
 
 	toastr.options = {
@@ -110,8 +114,6 @@
 		return 0;
 	}
 	function displayCounter(timerMode) {
-		var interval = parseInt(selectedTimer.timerOperation)==2?1:0;
-		var timerLength = parseTime(selectedTimer.timerLength);
 		var secsSinceStart = (nowms-timerStarted)/1000;
 
 		if(parseInt(selectedTimer.timerRestartButton)) {
@@ -119,29 +121,29 @@
 		} else {
 		        $("#restart").hide();
 		}
-                timerLength+=1;
+                var tl=timerLength+1;
 	
 		switch(timerMode) {
 			case 1: // count down
 				if(interval) {
-                                        secs = Math.floor(secsSinceStart)%timerLength;
-                                        secs = timerLength - secs -1;
+                                        secs = Math.floor(secsSinceStart)%tl;
+                                        secs = tl - secs -1;
 				        console.debug("secs:"+secs);
 				} else {
-                                        secs = Math.floor(timerLength-secsSinceStart);
+                                        secs = Math.floor(tl-secsSinceStart);
 					secs = (secs > 0)?secs:0;
 				}
 				break;
 			case 2: // count up
 				secs = Math.floor(secsSinceStart);
 				if(interval) {
-					secs %=timerLength;
+					secs %=tl;
 					secs = Math.abs(secs);
 				}
-				secs = (secs <= timerLength)?secs:timerLength;
+				secs = (secs <= tl)?secs:tl;
 				break;
-			case 3: // cound down & up
-				secs = Math.floor(timerLength-secsSinceStart);
+			case 3: // count down & up
+				secs = Math.floor(tl-secsSinceStart);
 				secs = Math.abs(secs);
 				break;
 		}
@@ -151,8 +153,6 @@
 	}
 	function renderTimer() {
 		nowms = $.now() - timeSkew;
-		var timerMode = parseInt(selectedTimer.timerMode);
-		var timerSounds = parseInt(selectedTimer.timerSounds);
 		switch(timerMode) {
 				case 1: 
 				case 2: 
@@ -174,12 +174,16 @@
 				break;
 		}
 		if(timerSounds>0) {
-		        if(secs == 5) {
+		        if(secs == 5 && beep4.paused) {
         		        beep4.play();
                         }
+                        if(!interval)
+                                if(secs == timerLength && beep1.paused) {
+                                        beep1.play();
+                                }
 		}
 		if(timerSounds == 2) {
-		        if(secs == 60) {
+		        if(secs == 60 && beep1.paused) {
         		        beep1.play();
                         }
 		} 
@@ -199,7 +203,7 @@
 	}
 	function timerStart(obj) {
 	        console.debug("timerStart");
-	        $.get('/timerStart', { 'uuid': selectedTimer.uuid});
+	        $.get('timerStart', { 'uuid': selectedTimer.uuid});
 	}
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged");
@@ -209,6 +213,10 @@
 			timerStarted = parseInt(selectedTimer.timerStarted);
 			timerStopped = parseInt(selectedTimer.timerStopped);
 			timerFormat = parseInt(selectedTimer.timerFormat);
+        		timerLength = parseTime(selectedTimer.timerLength);
+	        	timerMode = parseInt(selectedTimer.timerMode);
+	        	timerSounds = parseInt(selectedTimer.timerSounds);
+	        	interval = parseInt(selectedTimer.timerOperation)==2?1:0;
 			if(timerStarted > timerStopped) {
 				startTimer();
 			} else {

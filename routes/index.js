@@ -5,7 +5,7 @@ var util = require('util');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'BayCom Timer Setup' });
+  res.render('index', { title: 'Timer Setup' });
 });
 
 router.get('/timer', function(req, res, next) {

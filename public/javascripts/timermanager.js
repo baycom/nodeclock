@@ -106,19 +106,19 @@
 		if(selectedTimer == -1) {
 		        $("#preview").html('');
 		} else {
-                        $("#preview").html('<iframe width="300" height="150" style="-webkit-transform:scale(1.0);-moz-transform-scale(1.0);" src="/timer?uuid='+selectedTimer+'" frameborder="1"></iframe><p><a href="/timer?uuid='+selectedTimer+'" target="timer">Fullscreen</a>');
+                        $("#preview").html('<iframe width="300" height="150" style="-webkit-transform:scale(1.0);-moz-transform-scale(1.0);" src="timer?uuid='+selectedTimer+'" frameborder="1"></iframe><p><a href="timer?uuid='+selectedTimer+'" target="timer">Fullscreen</a>');
                 }
   	}
 	function timerStart(sel) {
 		$("#timerStarted").val($.now()+timeSkew);
-		$.get('/timerStart', { 'uuid': selectedTimer})
+		$.get('timerStart', { 'uuid': selectedTimer})
 			.done( function(data) {
 				toastr.success('Timer started');
 			});
   	}
 	function timerStop(sel) {
 		$("#timerStopped").val($.now()+timeSkew);
-		$.get('/timerStop', { 'uuid': selectedTimer})
+		$.get('timerStop', { 'uuid': selectedTimer})
 			.done( function(data) {
 				toastr.success('Timer stopped');
 			});
@@ -130,7 +130,7 @@
 	function timerDelete(obj) {
 		$("#timerParms").hide();
 		$("#add").show();
-		$.get('/timerDelete', { 'uuid': selectedTimer})
+		$.get('timerDelete', { 'uuid': selectedTimer})
 			.done( function(data) {
 				toastr.success('Timer deleted');
 			});
@@ -154,7 +154,7 @@
 				$("#uuid").val(guid());
 			}
 
-			$.get('/timerSet', $('#timerForm').serialize())
+			$.get('timerSet', $('#timerForm').serialize())
 				.done( function(data) {
 					toastr.success("Timer updated");
 				});

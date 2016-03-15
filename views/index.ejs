@@ -2,12 +2,12 @@
 <html>
   <head>
 	<title><%= title %></title>
-	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css"/>
-	<link rel="stylesheet" type="text/css" href="/stylesheets/toastr.min.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css"/>
+	<link rel="stylesheet" type="text/css" href="stylesheets/toastr.min.css"/>
     	<script type="text/javascript" src="socket.io/socket.io.js"></script>
-    	<script type="text/javascript" src="/javascripts/jquery-2.2.1.min.js"></script>
-	<script type="text/javascript" src="/javascripts/toastr.min.js"></script>
-	<script type="text/javascript" src="/javascripts/timermanager.js"></script>
+    	<script type="text/javascript" src="javascripts/jquery-2.2.1.min.js"></script>
+	<script type="text/javascript" src="javascripts/toastr.min.js"></script>
+	<script type="text/javascript" src="javascripts/timermanager.js"></script>
   </head>
   <body>
 	<h1><%= title %></h1>
@@ -28,7 +28,7 @@
 			<p>
 			<button id="delete" onclick="timerDelete(this);">Delete Timer</button>
 		</div>
-		<form id="timerForm" action="/setTimer" method="post"> 
+		<form id="timerForm" action="setTimer" method="post"> 
               	<p>
 		<label for="timerName">Timer Name:
 			<input name="timerName" id="timerName" type="text" placeholder="A descriptive name" title="Enter a timer name">
@@ -64,8 +64,8 @@
 			<p> <label for="timerSounds">Timer Sounds: 
 				<select name="timerSounds" id="timerSounds">
 					<option value="0">None</option>
-					<option value="1">Final</option>
-					<option value="2">1min &amp; Final</option>
+					<option value="1">Start/Final</option>
+					<option value="2">1min &amp; Start/Final</option>
 				</select> 
 			</label>
 			<p> <label for="timerRestartButton">Restart button in timer view: 
