@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/toastr.min.css"/>
+    	<script type="text/javascript" src="socket.io/socket.io.js"></script>
+    	<script type="text/javascript" src="/javascripts/jquery-2.2.1.min.js"></script>
+	<script type="text/javascript" src="/javascripts/toastr.min.js"></script>
+	<script type="text/javascript" src="/javascripts/bigscreen.min.js"></script>
+	<script type="text/javascript" src="/javascripts/timer.js"></script>
+
+  </head>
+  <body id="body">
+	<div style="display: none" id="debug"></div>
+	<select style="display: none" id="timers" onchange="timerSelected(this);"></select>
+	<div id="timer"></div>
+	<button style="display: none" id="restart" onclick="timerStart(this);">Restart</button>
+  </body>
+</html>
+

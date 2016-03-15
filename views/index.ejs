@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css"/>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/toastr.min.css"/>
+    	<script type="text/javascript" src="socket.io/socket.io.js"></script>
+    	<script type="text/javascript" src="/javascripts/jquery-2.2.1.min.js"></script>
+	<script type="text/javascript" src="/javascripts/toastr.min.js"></script>
+	<script type="text/javascript" src="/javascripts/timermanager.js"></script>
+  </head>
+  <body>
+	<h1><%= title %></h1>
+	<div style="display: none" id="serverok">
+	    <div id="preview">
+            </div>
+            <p>
+	    <label for="timers">Select Timer:
+	            <select id="timers" onchange="timerSelected(this);"></select>
+	    </label>
+	    <div style="display: none" id="timerStartDiv">
+		    <button id="start" onclick="timerStart(this);">Start Timer</button>
+		    <button id="stop" onclick="timerStop(this);">Stop Timer</button>
+	    </div>
+	    <button id="add" onclick="timerAdd(this);">Add/Modify Timer</button>
+	    <div style="display: none" id="timerParms">
+		<div style="display: none" id="timerDelete">
+			<p>
+			<button id="delete" onclick="timerDelete(this);">Delete Timer</button>
+		</div>
+		<form id="timerForm" action="/setTimer" method="post"> 
+              	<p>
+		<label for="timerName">Timer Name:
+			<input name="timerName" id="timerName" type="text" placeholder="A descriptive name" title="Enter a timer name">
+		</label>
+		<p>
+		<label for="timerFormat">Timer display format:
+			<select name="timerFormat" id="timerFormat">
+				<option value="1">MM:SS</option>
+				<option value="2">HH:MM</option>
+				<option value="3">HH:MM:SS</option>
+			</select>
+		</label>
+		<p>
+		<label for="timerMode">Timer mode:
+			<select name="timerMode" id="timerMode" onchange="timerModeSelected(this);">
+				<option value="1">Count Down</option>
+				<option value="2">Count Up</option>
+				<option value="3">Count Down &amp; Up</option>
+				<option value="4">Daytime</option>
+			</select>
+		</label>
+		<div id="timerModeDiv">
+              		<p>
+			<label for="timerOperation">Timer operation:
+				<select name="timerOperation" id="timerOperation">
+					<option value="1">Once</option>
+					<option value="2">Interval</option>
+				</select> 
+			</label>
+			<p> <label for="timerLength">Timer length: 
+				<input name="timerLength" id="timerLength" type="text" placeholder="HH:MM:SS" title="Enter a timer length">
+			</label>
+			<p> <label for="timerSounds">Timer Sounds: 
+				<select name="timerSounds" id="timerSounds">
+					<option value="0">None</option>
+					<option value="1">Final</option>
+					<option value="2">1min &amp; Final</option>
+				</select> 
+			</label>
+			<p> <label for="timerRestartButton">Restart button in timer view: 
+				<select name="timerRestartButton" id="timerRestartButton">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</select> 
+			</label>
+		</div>
+		<input id="timerStarted" name="timerStarted" type="hidden">
+		<input id="timerStopped" name="timerStopped" type="hidden">
+		<input id="lastChanged" name="lastChanged" type="hidden">
+		<input id="uuid" name="uuid" type="hidden">
+		</form>
+		<button id="submit" onclick="timerSet(this);">Add/Update</button>
+            </div>
+	</div>
+  </body>
+</html>
