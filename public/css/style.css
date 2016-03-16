@@ -6,7 +6,6 @@ body {
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	overflow:hidden;
 }
 
 a {
@@ -22,6 +21,7 @@ div {
 }
 
 #timer {
+	overflow:hidden;
 	position: relative;
 	display: table;
 	top: 200px;
