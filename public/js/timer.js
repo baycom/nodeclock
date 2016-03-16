@@ -256,7 +256,9 @@
         });
         function resizeTimer() {
                 var newPos;
-                if($(window).height()>300) {
+                if($(window).height()>800) {
+                        newPos=250;
+                } else if($(window).height()>300) {
                         newPos=150;
                 } else {
                         newPos=45;
