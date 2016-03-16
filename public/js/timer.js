@@ -18,8 +18,9 @@
         var fgcolor;
 	var socket = io();
 	var timeSkew = 0;
-	var beep1 = new Audio("media/beep-1.mp3");
-	var beep4 = new Audio("media/countdown.mp3");
+	var beep1;
+	var beep4;
+	var audioSupported=false;
 	var intervalTimer = null;
 
 	toastr.options = {
@@ -177,34 +178,41 @@
 			case 3: $('#timer').text(hours+':'+minutes+':'+seconds);
 				break;
 		}
-		if(timerSounds>0) {
-		        if(secs == 5 && beep4.paused) {
-        		        beep4.play();
-                        }
-		}
-		if(timerSounds == 2) {
-		        if(secs == 60 && beep1.paused) {
-        		        beep1.play();
-                        }
-		} 
+		if(audioSupported) {
+        		if(timerSounds>0) {
+	        	        if(secs == 5 && beep4.paused) {
+        	        	        beep4.play();
+        	        	        }
+        		}
+	        	if(timerSounds == 2) {
+		                if(secs == 60 && beep1.paused) {
+        		                beep1.play();
+                                }
+        		} 
+                }
 	}
 	function startTimer() {
 	        $('#timer').fadeIn(1000);
+	        
 	        renderCounter(timerMode);
-                if(secs && timerMode < 4 && timerSounds > 0 && beep1.paused) {
+                if(audioSupported && secs && timerMode < 4 && timerSounds > 0 && beep1.paused) {
                         beep1.play();
                 }
-                if(intervalTimer == null) {
+                if(!intervalTimer) {
         		intervalTimer = setInterval(displayTimer, 300);
                 }
 	}
 	function stopTimer() {
 		clearInterval(intervalTimer);
-		intervalTimer=null;
-		beep4.pause();
-		beep4.currentTime=0;
-		beep1.pause();
-		beep1.currentTime=0;
+		intervalTimer=false;
+		if(audioSupported && !beep4.paused) {
+        		beep4.pause();
+	        	beep4.currentTime=0;
+                }
+                if(audioSupported && !beep1.paused) {
+        		beep1.pause();
+	        	beep1.currentTime=0;
+                }
 		$('#timer').fadeOut(1500);
 	}
 	function timerStart(obj) {
@@ -276,7 +284,12 @@
                         }
                         return false;
                 });
-
+                var a = document.createElement('audio');
+                if (!!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''))) {
+        	        beep1 = new Audio("media/beep-1.mp3");
+        	        beep4 = new Audio("media/countdown.mp3");
+        	        audioSupported = true;
+                }
                 uuid = QueryString.uuid;
                 bgcolor = QueryString.bgcolor;
                 fgcolor = QueryString.fgcolor;
