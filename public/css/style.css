@@ -1,7 +1,7 @@
 body {
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 	background-color: #000;
-	color: #fff;
+	color: #fff;cc
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -11,6 +11,10 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+button, input, select, textarea {
+  color: #000;
 }
 
 div {

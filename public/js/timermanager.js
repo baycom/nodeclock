@@ -70,6 +70,8 @@
 			$("#timerDelete").show();
 			$("#timerStartDiv").show();
 			$("#timerName").val(data.timerName);
+			$("#bgcolor").val(data.bgcolor);
+			$("#fgcolor").val(data.fgcolor);
 			$("#uuid").val(data.uuid);
 			$("#timerStarted").val(data.timerStarted);
 			$("#timerStopped").val(data.timerStopped);
@@ -169,3 +171,10 @@
 			$("#timerModeDiv").show();
 		}
 	}
+	$(function(){
+	        $('#bgcolor').colorpicker();
+        });
+	$(function(){
+	        $('#fgcolor').colorpicker();
+        });
+        

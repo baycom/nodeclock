@@ -14,11 +14,13 @@
 	var minutes;
 	var seconds;
 	var uuid;
+        var bgcolor;
+        var fgcolor;
 	var socket = io();
 	var timeSkew = 0;
 	var beep1 = new Audio("media/beep-1.mp3");
 	var beep4 = new Audio("media/countdown.mp3");
-	var intervalTimer;
+	var intervalTimer = null;
 
 	toastr.options = {
   		"closeButton": false,
@@ -98,7 +100,7 @@
 		var myURL = document.location;
 		document.location = myURL + "?uuid="+uuid;
         }
-	function displayDaytime() {
+	function renderDaytime() {
 		var now = new Date (nowms);
 		hours = now.getHours();
 		minutes = now.getMinutes();
@@ -113,7 +115,7 @@
 		}
 		return 0;
 	}
-	function displayCounter(timerMode) {
+	function renderCounter(timerMode) {
 		var secsSinceStart = (nowms-timerStarted)/1000;
 
 		if(parseInt(selectedTimer.timerRestartButton)) {
@@ -121,14 +123,16 @@
 		} else {
 		        $("#restart").hide();
 		}
-                var tl=timerLength+1;
+                var tl=timerLength;
+                if(!interval && timerMode !=2) {
+                        tl++;
+                }
 	
 		switch(timerMode) {
 			case 1: // count down
 				if(interval) {
                                         secs = Math.floor(secsSinceStart)%tl;
                                         secs = tl - secs -1;
-				        console.debug("secs:"+secs);
 				} else {
                                         secs = Math.floor(tl-secsSinceStart);
 					secs = (secs > 0)?secs:0;
@@ -148,17 +152,17 @@
 				break;
 		}
 		hours = Math.floor(secs/3600);
-		minutes = Math.floor(secs/60);
+		minutes = Math.floor(secs/60)%60;
 		seconds = secs%60;
 	}
-	function renderTimer() {
+	function displayTimer() {
 		nowms = $.now() - timeSkew;
 		switch(timerMode) {
 				case 1: 
 				case 2: 
-				case 3: displayCounter(timerMode);
+				case 3: renderCounter(timerMode);
 					break;
-				case 4: displayDaytime(); 
+				case 4: renderDaytime(); 
 					break;
 		}
 		if(hours < 10) hours = "0"+hours;
@@ -177,24 +181,26 @@
 		        if(secs == 5 && beep4.paused) {
         		        beep4.play();
                         }
-                        if(!interval)
-                                if(secs == timerLength && beep1.paused) {
-                                        beep1.play();
-                                }
 		}
 		if(timerSounds == 2) {
 		        if(secs == 60 && beep1.paused) {
         		        beep1.play();
                         }
 		} 
-		
 	}
 	function startTimer() {
 	        $('#timer').fadeIn(1000);
-		intervalTimer = setInterval(renderTimer, 300);
+	        renderCounter(timerMode);
+                if(secs && timerMode < 4 && timerSounds > 0 && beep1.paused) {
+                        beep1.play();
+                }
+                if(intervalTimer == null) {
+        		intervalTimer = setInterval(displayTimer, 300);
+                }
 	}
-	function stopTimer(a) {
+	function stopTimer() {
 		clearInterval(intervalTimer);
+		intervalTimer=null;
 		beep4.pause();
 		beep4.currentTime=0;
 		beep1.pause();
@@ -217,6 +223,17 @@
 	        	timerMode = parseInt(selectedTimer.timerMode);
 	        	timerSounds = parseInt(selectedTimer.timerSounds);
 	        	interval = parseInt(selectedTimer.timerOperation)==2?1:0;
+	        	if(!bgcolor) {
+        	        	$('body').css('background-color', selectedTimer.bgcolor);
+                        } else {
+                                $('body').css('background-color', bgcolor);
+                        }
+                        if(!fgcolor) {
+        	        	$('body').css('color', selectedTimer.fgcolor);
+                        } else {
+                                $('body').css('color', fgcolor);
+                        }
+
 			if(timerStarted > timerStopped) {
 				startTimer();
 			} else {
@@ -237,7 +254,7 @@
                 if($(window).height()>300) {
                         newPos=150;
                 } else {
-                        newPos=35;
+                        newPos=45;
                 }
                 var newtop=($(window).height()/2)-newPos;
                 $('#timer').css('top', newtop + 'px');        
@@ -247,13 +264,15 @@
         });
         $(document).ready(function() {
                 $("#timer").click(function() {
-                if (BigScreen.enabled) {
-                        BigScreen.toggle();
-                }
-                return false;
-        });
+                        if (BigScreen.enabled) {
+                                BigScreen.toggle();
+                        }
+                        return false;
+                });
 
                 uuid = QueryString.uuid;
+                bgcolor = QueryString.bgcolor;
+                fgcolor = QueryString.fgcolor;
                 resizeTimer();
         }); 
           
