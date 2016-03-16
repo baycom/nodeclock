@@ -225,8 +225,13 @@
 	        	interval = parseInt(selectedTimer.timerOperation)==2?1:0;
 	        	if(!bgcolor) {
         	        	$('body').css('background-color', selectedTimer.bgcolor);
+        	        	$('#timer').css('background-color', selectedTimer.bgcolor);
+        	        	$('html').css('background-color', selectedTimer.bgcolor);
+        	        	
                         } else {
-                                $('body').css('background-color', bgcolor);
+        	        	$('body').css('background-color', bgcolor);
+        	        	$('#timer').css('background-color', bgcolor);
+        	        	$('html').css('background-color', bgcolor);
                         }
                         if(!fgcolor) {
         	        	$('body').css('color', selectedTimer.fgcolor);
