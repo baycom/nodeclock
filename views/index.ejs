@@ -2,12 +2,16 @@
 <html>
   <head>
 	<title><%= title %></title>
-	<link rel="stylesheet" type="text/css" href="stylesheets/style.css"/>
-	<link rel="stylesheet" type="text/css" href="stylesheets/toastr.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/toastr.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  	<link rel="stylesheet" type="text/css" href="css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
     	<script type="text/javascript" src="socket.io/socket.io.js"></script>
-    	<script type="text/javascript" src="javascripts/jquery-2.2.1.min.js"></script>
-	<script type="text/javascript" src="javascripts/toastr.min.js"></script>
-	<script type="text/javascript" src="javascripts/timermanager.js"></script>
+    	<script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+	<script type="text/javascript" src="js/toastr.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-colorpicker.js"></script>
+	<script type="text/javascript" src="js/timermanager.js"></script>
   </head>
   <body>
 	<h1><%= title %></h1>
@@ -22,6 +26,8 @@
 		    <button id="start" onclick="timerStart(this);">Start Timer</button>
 		    <button id="stop" onclick="timerStop(this);">Stop Timer</button>
 	    </div>
+	    <p>
+	    <p>
 	    <button id="add" onclick="timerAdd(this);">Add/Modify Timer</button>
 	    <div style="display: none" id="timerParms">
 		<div style="display: none" id="timerDelete">
@@ -75,6 +81,14 @@
 				</select> 
 			</label>
 		</div>
+		<p>
+		<label for="bgcolor">Background color:
+	    		<input name="bgcolor" id="bgcolor" type="text" value="#00000000"/>
+		</label>
+		<p>
+		<label for="fgcolor">Foreground color:
+	    		<input name="fgcolor" id="fgcolor" type="text" value="#ffffffff"/>
+		</label>
 		<input id="timerStarted" name="timerStarted" type="hidden">
 		<input id="timerStopped" name="timerStopped" type="hidden">
 		<input id="lastChanged" name="lastChanged" type="hidden">
