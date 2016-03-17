@@ -188,13 +188,13 @@
                                 $("#add").hide();
                                 $("#stop").hide();
                                 $("#timerParms").hide();
-                                $("#timers").hide();
+                                $("#timerSelector").hide();
                         } else {
                                 $("#hide").html("Hide");
                                 $("#preview").show();
                                 $("#add").show();
                                 $("#stop").show();
-                                $("#timers").show();
+                                $("#timerSelector").show();
                                 timerSelected($("#timers"));
                                 
                         }        

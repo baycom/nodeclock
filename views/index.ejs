@@ -19,15 +19,18 @@
 	    <div id="preview">
             </div>
             <p>
-	    <label for="timers">Select Timer:
-	            <select id="timers" onchange="timerSelected(this);"></select>
-	    </label>
+	    <div id="timerSelector">
+		    <label for="timers">Select Timer:
+		            <select id="timers" onchange="timerSelected(this);"></select>
+	    	    </label>
+	    </div>
+	    <p>
 	    <div style="display: none" id="timerStartDiv">
 		    <button id="start" onclick="timerStart(this);">Start Timer</button>
 		    <button id="stop" onclick="timerStop(this);">Stop Timer</button>
 		    <button id="hide">Hide</button>
 	    </div>
-	    <p>
+            <p>
 	    <p>
 	    <button id="add" onclick="timerAdd(this);">Add/Modify Timer</button>
 	    <div style="display: none" id="timerParms">
