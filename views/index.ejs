@@ -25,6 +25,7 @@
 	    <div style="display: none" id="timerStartDiv">
 		    <button id="start" onclick="timerStart(this);">Start Timer</button>
 		    <button id="stop" onclick="timerStop(this);">Stop Timer</button>
+		    <button id="hide">Hide</button>
 	    </div>
 	    <p>
 	    <p>
@@ -42,7 +43,9 @@
 		<p>
 		<label for="timerFormat">Timer display format:
 			<select name="timerFormat" id="timerFormat">
+				<option value="5">M:SS</option>
 				<option value="1">MM:SS</option>
+				<option value="4">MMM:SS</option>
 				<option value="2">HH:MM</option>
 				<option value="3">HH:MM:SS</option>
 			</select>

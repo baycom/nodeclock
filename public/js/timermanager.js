@@ -3,6 +3,7 @@
 	var timerParms;
 	var socket = io();
 	var timeSkew = 0;
+	var hideGUI = false;
 	
 	toastr.options = {
   		"closeButton": false,
@@ -101,7 +102,7 @@
 		}
 	}
 	function timerSelected(sel) {
-       		selectedTimer = sel.value;
+       		selectedTimer = $("#timers").val();
 		updateForm();
 		$("#timerParms").hide();
 		$("#add").show();
@@ -176,5 +177,27 @@
         });
 	$(function(){
 	        $('#fgcolor').colorpicker();
+        });
+        $(document).ready(function() {
+                $("#hide").click(function() {
+                        hideGUI=!hideGUI;
+                        if(hideGUI) {
+                                $("#hide").html("Show");
+                                $("#preview").hide();
+                                $("#preview").html("");
+                                $("#add").hide();
+                                $("#stop").hide();
+                                $("#timerParms").hide();
+                                $("#timers").hide();
+                        } else {
+                                $("#hide").html("Hide");
+                                $("#preview").show();
+                                $("#add").show();
+                                $("#stop").show();
+                                $("#timers").show();
+                                timerSelected($("#timers"));
+                                
+                        }        
+                });
         });
         

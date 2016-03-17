@@ -109,7 +109,7 @@
 	}
 	function parseTime(timeStr) {
 		var t = timeStr.split(':');
-		if(t.length > 5 ) {
+		if(timeStr.length > 5 ) {
 			return (+t[0]) * 60 * 60 + (+t[1]) * 60 + (+t[2]); 
 		} else {
 			return (+t[0]) * 60 + (+t[1]); 
@@ -167,10 +167,12 @@
 					break;
 		}
 		if(hours < 10) hours = "0"+hours;
-		if(minutes < 10) minutes = "0"+minutes;
+		if(minutes < 10 && timerFormat < 4) minutes = "0"+minutes;
 		if(seconds < 10) seconds ="0"+seconds;
 		
 		switch(timerFormat) {
+		        case 4:	minutes+=+hours*60;
+		        case 5:
 			case 1: $('#timer').text(minutes+':'+seconds);
 				break;
 			case 2: $('#timer').text(hours+':'+minutes);
@@ -231,6 +233,7 @@
 	        	timerMode = parseInt(selectedTimer.timerMode);
 	        	timerSounds = parseInt(selectedTimer.timerSounds);
 	        	interval = parseInt(selectedTimer.timerOperation)==2?1:0;
+	        	console.debug("length:"+timerLength);
 	        	if(!bgcolor) {
         	        	$('body').css('background-color', selectedTimer.bgcolor);
         	        	$('#timer').css('background-color', selectedTimer.bgcolor);
