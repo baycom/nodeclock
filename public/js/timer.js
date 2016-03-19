@@ -275,11 +275,25 @@
 		console.debug("prefsChanged / timeSkew:" + timeSkew);
 		timerPrefs = data;	
         });
+	function getWidthOfText(txt, fontname, fontsize){
+		var c=document.createElement('canvas');
+		var ctx=c.getContext('2d');
+		ctx.font=fontsize+"px "+fontname;
+		var m=ctx.measureText(txt);
+		return m.width;
+	}
         function resizeTimer() {
-                var height = window.innerHeight;
-                height = document.documentElement.clientHeight;
+                var height = document.documentElement.clientHeight;
                 var fontsize = Math.floor(height * 0.5);
-                var font = fontsize+"px Arial, Monaco, Calibri, sans-serif";
+		var textwidth;
+		var windowWidth = $(window).width();
+		var font = "Arial, Monaco, Calibri, sans-serif";
+		do {
+			textwidth=getWidthOfText("00:00:00", font ,fontsize);
+			fontsize-=5;
+		} while(textwidth > windowWidth);
+                var font = fontsize+"px "+font;
+
                 $('#timer').css('font', font); 
                 var fontheight = parseInt(window.getComputedStyle($("#timer")[0]).fontSize, 10);
 //                console.debug(font + "font size: "+fontsize+"font height: "+fontheight);
