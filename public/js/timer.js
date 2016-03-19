@@ -7,6 +7,7 @@
 	var timerMode;
 	var timerSounds;
 	var timerLength;
+	var timerEnabled;
 	var interval;
 	var nowms;
 	var secs;
@@ -193,10 +194,13 @@
         		} 
                 }
 	}
+	function enableTimer() {
+	}
+	function disableTimer() {
+	}
 	function startTimer() {
+	        displayTimer();
 	        $('#timer').fadeIn(1000);
-	        
-	        renderCounter(timerMode);
                 if(audioSupported && secs && timerMode < 4 && timerSounds > 0 && beep1.paused) {
                         beep1.play();
                 }
@@ -205,7 +209,8 @@
                 }
 	}
 	function stopTimer() {
-		clearInterval(intervalTimer);
+	        $('#timer').fadeOut(1500);
+                clearInterval(intervalTimer);
 		intervalTimer=false;
 		if(audioSupported && !beep4.paused) {
         		beep4.pause();
@@ -215,7 +220,7 @@
         		beep1.pause();
 	        	beep1.currentTime=0;
                 }
-		$('#timer').fadeOut(1500);
+
 	}
 	function timerStart(obj) {
 	        console.debug("timerStart");
@@ -228,6 +233,7 @@
 			timerByUUID(uuid);
 			timerStarted = parseInt(selectedTimer.timerStarted);
 			timerStopped = parseInt(selectedTimer.timerStopped);
+			timerEnabled = parseInt(selectedTimer.timerEnabled);
 			timerFormat = parseInt(selectedTimer.timerFormat);
         		timerLength = parseTime(selectedTimer.timerLength);
 	        	timerMode = parseInt(selectedTimer.timerMode);
@@ -249,7 +255,11 @@
                         } else {
                                 $('body').css('color', fgcolor);
                         }
-
+                        if(timerEnabled) {
+                                enableTimer();
+                        } else {
+                                disableTimer();
+                        }
 			if(timerStarted > timerStopped) {
 				startTimer();
 			} else {
@@ -266,16 +276,15 @@
 		timerPrefs = data;	
         });
         function resizeTimer() {
-                var newPos;
-                if($(window).height()>800) {
-                        newPos=250;
-                } else if($(window).height()>300) {
-                        newPos=150;
-                } else {
-                        newPos=45;
-                }
-                var newtop=($(window).height()/2)-newPos;
-                $('#timer').css('top', newtop + 'px');        
+                var height = window.innerHeight;
+                height = document.documentElement.clientHeight;
+                var fontsize = Math.floor(height * 0.5);
+                var font = fontsize+"px Arial, Monaco, Calibri, sans-serif";
+                $('#timer').css('font', font); 
+                var fontheight = parseInt(window.getComputedStyle($("#timer")[0]).fontSize, 10);
+//                console.debug(font + "font size: "+fontsize+"font height: "+fontheight);
+                var newtop = (height/2) - (fontheight/1.7);
+                $('#timer').css('top', newtop + 'px');
         }
         $(window).on('resize orientationChange', function(event) {
                 resizeTimer();
@@ -293,6 +302,7 @@
         	        beep4 = new Audio("media/countdown.mp3");
         	        audioSupported = true;
                 }
+                $("body").css('overflow', 'hidden');
                 uuid = QueryString.uuid;
                 bgcolor = QueryString.bgcolor;
                 fgcolor = QueryString.fgcolor;

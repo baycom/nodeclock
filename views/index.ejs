@@ -28,6 +28,10 @@
 	    <div style="display: none" id="timerStartDiv">
 		    <button id="start" onclick="timerStart(this);">Start Timer</button>
 		    <button id="stop" onclick="timerStop(this);">Stop Timer</button>
+<!--
+		    <button id="enable">Show Timer</button>
+		    <button id="disable">Hide Timer</button>
+-->
 		    <button id="hide">Hide</button>
 	    </div>
             <p>
@@ -98,6 +102,7 @@
 		<input id="timerStarted" name="timerStarted" type="hidden">
 		<input id="timerStopped" name="timerStopped" type="hidden">
 		<input id="lastChanged" name="lastChanged" type="hidden">
+		<input id="timerEnabled" name="timerEnabled" type="hidden">
 		<input id="uuid" name="uuid" type="hidden">
 		</form>
 		<button id="submit" onclick="timerSet(this);">Add/Update</button>

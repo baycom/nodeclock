@@ -77,5 +77,37 @@ router.get('/timerStop', function(req, res, next) {
     }
   });
 });
+router.get('/timerEnable', function(req, res, next) {
+  www.storage.getItem("uuid-" + req.query.uuid, function(err, json) {;
+    if(json) {
+        console.log(util.inspect(json, false, null));
+        json.timerEnabled = 1;
+        console.log(util.inspect(json, false, null));
+        www.storage.setItem("uuid-"+req.query.uuid, json, function(err) {
+          var json=www.storage.valuesWithKeyMatch(/uuid-/);
+          res.send(json);
+          var prefs = { rtc: (new Date()).getTime() };
+          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', json);
+        });
+    }
+  });
+});
+router.get('/timerDisable', function(req, res, next) {
+  www.storage.getItem("uuid-" + req.query.uuid, function(err, json) {;
+    if(json) {
+        console.log(util.inspect(json, false, null));
+        json.timerEnabled = 0;
+        console.log(util.inspect(json, false, null));
+        www.storage.setItem("uuid-"+req.query.uuid, json, function(err) {
+          var json=www.storage.valuesWithKeyMatch(/uuid-/);
+          res.send(json);
+          var prefs = { rtc: (new Date()).getTime() };
+          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', json);
+        });
+    }
+  });
+});
 
 module.exports = router;

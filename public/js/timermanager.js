@@ -76,6 +76,7 @@
 			$("#uuid").val(data.uuid);
 			$("#timerStarted").val(data.timerStarted);
 			$("#timerStopped").val(data.timerStopped);
+			$("#timerEnabled").val(data.timerEnabled);
 			$("#timerLength").val(data.timerLength);
 			$("#timerFormat option").filter(function() {
 			    return $(this).val() == data.timerFormat; 
@@ -125,6 +126,21 @@
 			.done( function(data) {
 				toastr.success('Timer stopped');
 			});
+  	}
+	function timerEnable(enabled) {
+	        console.debug("timerEnable:"+enabled);
+		$("#timerEnabled").val(enabled);
+		if(enabled) {
+        		$.get('timerEnable', { 'uuid': selectedTimer})
+	        		.done( function(data) {
+                                toastr.success('Timer enabled');
+			});
+                } else {
+        		$.get('timerDisable', { 'uuid': selectedTimer})
+	        		.done( function(data) {
+                                toastr.success('Timer disabled');
+			});
+                }
   	}
 	function timerAdd(obj) {
 		$("#timerParms").show();
@@ -187,6 +203,8 @@
                                 $("#preview").html("");
                                 $("#add").hide();
                                 $("#stop").hide();
+                                $("#enable").hide();
+                                $("#disable").hide();
                                 $("#timerParms").hide();
                                 $("#timerSelector").hide();
                         } else {
@@ -194,10 +212,17 @@
                                 $("#preview").show();
                                 $("#add").show();
                                 $("#stop").show();
+                                $("#enable").show();
+                                $("#disable").show();
                                 $("#timerSelector").show();
                                 timerSelected($("#timers"));
-                                
                         }        
+                });
+                $("#enable").click(function() {
+                        timerEnable(true);
+                });
+                $("#disable").click(function() {
+                        timerEnable(false);
                 });
         });
         
