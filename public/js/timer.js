@@ -201,8 +201,10 @@
 	function startTimer() {
 	        displayTimer();
 	        $('#timer').fadeIn(1000);
-                if(audioSupported && secs == timerLength && timerMode < 4 && timerSounds > 0 && beep1.paused) {
-                        beep1.play();
+                if(audioSupported && timerMode < 4 && timerSounds > 0 && beep1.paused) {
+                        if((interval && secs == timerLength-1) ||  (!interval && secs == timerLength)) {
+                                beep1.play();
+                        }
                 }
                 if(!intervalTimer) {
         		intervalTimer = setInterval(displayTimer, 300);
