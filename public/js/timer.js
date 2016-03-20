@@ -201,7 +201,7 @@
 	function startTimer() {
 	        displayTimer();
 	        $('#timer').fadeIn(1000);
-                if(audioSupported && secs && timerMode < 4 && timerSounds > 0 && beep1.paused) {
+                if(audioSupported && secs == timerLength && timerMode < 4 && timerSounds > 0 && beep1.paused) {
                         beep1.play();
                 }
                 if(!intervalTimer) {
