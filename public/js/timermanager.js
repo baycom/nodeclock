@@ -4,13 +4,14 @@
 	var socket = io();
 	var timeSkew = 0;
 	var hideGUI = false;
+	var timer;
 	
 	toastr.options = {
   		"closeButton": false,
   		"debug": false,
   		"newestOnTop": false,
   		"progressBar": false,
-  		"positionClass": "toast-top-right",
+  		"positionClass": "toast-top-left",
   		"preventDuplicates": true,
   		"onclick": null,
   		"showDuration": "300",
@@ -63,40 +64,41 @@
 	}
 	function updateForm() {
 		if(selectedTimer != -1) {
-			var data=findUUID(selectedTimer);
+			timer=findUUID(selectedTimer);
 			$("#timers option").filter(function() {
 			    return $(this).val() == selectedTimer; 
 			}).prop('selected', true);
 
 			$("#timerDelete").show();
 			$("#timerStartDiv").show();
-			$("#timerName").val(data.timerName);
-			$("#bgcolor").val(data.bgcolor);
-			$("#fgcolor").val(data.fgcolor);
-			$("#uuid").val(data.uuid);
-			$("#timerStarted").val(data.timerStarted);
-			$("#timerStopped").val(data.timerStopped);
-			$("#timerEnabled").val(data.timerEnabled);
-			$("#timerLength").val(data.timerLength);
+			$("#timerName").val(timer.timerName);
+			$("#bgcolor").val(timer.bgcolor);
+			$("#fgcolor").val(timer.fgcolor);
+			$("#uuid").val(timer.uuid);
+			$("#timerStarted").val(timer.timerStarted);
+			$("#timerStopped").val(timer.timerStopped);
+			$("#timerEnabled").val(timer.timerEnabled);
+			$("#timerLength").val(timer.timerLength);
 			$("#timerFormat option").filter(function() {
-			    return $(this).val() == data.timerFormat; 
+			    return $(this).val() == timer.timerFormat; 
 			}).prop('selected', true);
 			$("#timerMode option").filter(function() {
-			    return $(this).val() == data.timerMode; 
+			    return $(this).val() == timer.timerMode; 
 			}).prop('selected', true);
 			$("#timerOperation option").filter(function() {
-			    return $(this).val() == data.timerOperation; 
+			    return $(this).val() == timer.timerOperation; 
 			}).prop('selected', true);
 			$("#timerSounds option").filter(function() {
-			    return $(this).val() == data.timerSounds; 
+			    return $(this).val() == timer.timerSounds; 
 			}).prop('selected', true);
 			$("#timerRestartButton option").filter(function() {
-			    return $(this).val() == data.timerRestartButton; 
+			    return $(this).val() == timer.timerRestartButton; 
 			}).prop('selected', true);
 			timerModeSelected();
 		} else {
 			$("#timerDelete").hide();
 			$("#uuid").val('');
+			$("#lastChaged").val(0);
 			$("#timerStarted").val(0);
 			$("#timerStopped").val(0);
 			$("#timerStartDiv").hide();
@@ -113,16 +115,72 @@
                         $("#preview").html('<iframe width="300" height="150" style="-webkit-transform:scale(1.0);-moz-transform-scale(1.0);" src="timer?uuid='+selectedTimer+'" frameborder="1"></iframe><p><a href="timer?uuid='+selectedTimer+'" target="timer">Fullscreen</a>');
                 }
   	}
+	function parseTime(timeStr) {
+		var t = timeStr.split(':');
+		if(timeStr.length > 5 ) {
+			return (+t[0]) * 60 * 60 + (+t[1]) * 60 + (+t[2]); 
+		} else {
+			return (+t[0]) * 60 + (+t[1]); 
+		}
+		return 0;
+	}
+	function isCounterRunning() {	
+	        if(timer.timerStarted < timer.timerStopped) {
+	                return false;
+	        }
+	        var secs;
+		var secsSinceStart = ($.now()-timer.timerStarted)/1000;
+                var tl=parseTime(timer.timerLength);
+                var interval = parseInt(timer.timerOperation)==2?1:0;
+                if(interval) {
+                        return true;
+                }
+                if(!interval && timer.timerMode !=2) {
+                        tl++;
+                }
+		switch(parseInt(timer.timerMode)) {
+			case 1: // count down
+                                secs = Math.floor(tl-secsSinceStart);
+                                if(secs > 0) {
+                                        return true;
+                                }       
+				break;
+			case 2: // count up
+				secs = Math.floor(secsSinceStart);
+				if(secs <= tl) {
+				        return true;
+				}        
+				break;
+			case 3: // count down & up
+			case 4: // daytime
+                                return true;
+				break;
+		}
+		return false;
+	}
+  	
 	function timerStart(sel) {
+	        if(!isCounterRunning()) {
+		        $("#timerStarted").val($.now()+timeSkew);
+		        $.get('timerStart', { 'uuid': selectedTimer, 
+                                              'lastChanged': timer.lastChanged})
+                                              .done( function(data) {
+                                                      toastr.success('Timer started');
+                                        });
+                }
+        }
+	function timerResume(sel) {
 		$("#timerStarted").val($.now()+timeSkew);
-		$.get('timerStart', { 'uuid': selectedTimer})
+		$.get('timerResume', { 'uuid': selectedTimer,
+                                       'lastChanged': timer.lastChanged})
 			.done( function(data) {
-				toastr.success('Timer started');
+				toastr.success('Timer resumed');
 			});
   	}
 	function timerStop(sel) {
 		$("#timerStopped").val($.now()+timeSkew);
-		$.get('timerStop', { 'uuid': selectedTimer})
+		$.get('timerStop', { 'uuid': selectedTimer,
+                                     'lastChanged': timer.lastChanged})
 			.done( function(data) {
 				toastr.success('Timer stopped');
 			});
@@ -131,12 +189,14 @@
 	        console.debug("timerEnable:"+enabled);
 		$("#timerEnabled").val(enabled);
 		if(enabled) {
-        		$.get('timerEnable', { 'uuid': selectedTimer})
+        		$.get('timerEnable', { 'uuid': selectedTimer,
+        		                       'lastChanged': timer.lastChanged})
 	        		.done( function(data) {
                                 toastr.success('Timer enabled');
 			});
                 } else {
-        		$.get('timerDisable', { 'uuid': selectedTimer})
+        		$.get('timerDisable', { 'uuid': selectedTimer,
+        		                        'lastChanged': timer.lastChanged})
 	        		.done( function(data) {
                                 toastr.success('Timer disabled');
 			});
@@ -149,7 +209,8 @@
 	function timerDelete(obj) {
 		$("#timerParms").hide();
 		$("#add").show();
-		$.get('timerDelete', { 'uuid': selectedTimer})
+		$.get('timerDelete', { 'uuid': selectedTimer,
+                                       'lastChanged': timer.lastChanged})
 			.done( function(data) {
 				toastr.success('Timer deleted');
 			});
@@ -168,7 +229,11 @@
 		if($("#timerMode").val() != 4 && !regexp.test(val) || !$("#timerName").val()) {
 			toastr.error("Please set a name and a length like HH:MM:SS");
 		} else {
-			$("#lastChanged").val($.now()+timeSkew);
+		        if(!timer || !timer.lastChanged) {
+                                $("#lastChanged").val(0);
+		        } else {
+                                $("#lastChanged").val(timer.lastChanged);
+		        }
 			if(!$("#uuid").val()) {
 				$("#uuid").val(guid());
 			}
@@ -203,6 +268,7 @@
                                 $("#preview").html("");
                                 $("#add").hide();
                                 $("#stop").hide();
+                                $("#resume").hide();
                                 $("#enable").hide();
                                 $("#disable").hide();
                                 $("#timerParms").hide();
@@ -212,6 +278,7 @@
                                 $("#preview").show();
                                 $("#add").show();
                                 $("#stop").show();
+                                $("#resume").show();
                                 $("#enable").show();
                                 $("#disable").show();
                                 $("#timerSelector").show();

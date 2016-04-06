@@ -28,6 +28,7 @@ div {
 	margin-right: auto;
 	text-align: center;
 	font: 300px Arial, Monaco, Calibri, sans-serif;
+	cursor: none;
 }
 #timertest {
   border: 1px solid red;

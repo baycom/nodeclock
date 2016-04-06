@@ -119,6 +119,7 @@
 	}
 	function renderCounter(timerMode) {
 		var secsSinceStart = (nowms-timerStarted)/1000;
+		var stopped = timerStarted <= timerStopped;
 
 		if(parseInt(selectedTimer.timerRestartButton)) {
                         $("#restart").show();
@@ -152,6 +153,9 @@
 				secs = Math.floor(tl-secsSinceStart);
 				secs = Math.abs(secs);
 				break;
+		}
+		if(stopped) {
+//		        secs = 0;
 		}
 		hours = Math.floor(secs/3600);
 		minutes = Math.floor(secs/60)%60;
@@ -195,12 +199,14 @@
                 }
 	}
 	function enableTimer() {
+	        displayTimer();
+	        $('#timer').fadeIn(1000);
 	}
 	function disableTimer() {
+	        $('#timer').fadeOut(1500);
 	}
 	function startTimer() {
 	        displayTimer();
-	        $('#timer').fadeIn(1000);
                 if(audioSupported && timerMode < 4 && timerSounds > 0 && beep1.paused) {
                         if((interval && secs == timerLength-1) ||  (!interval && secs == timerLength)) {
                                 beep1.play();
@@ -211,7 +217,6 @@
                 }
 	}
 	function stopTimer() {
-	        $('#timer').fadeOut(1500);
                 clearInterval(intervalTimer);
 		intervalTimer=false;
 		if(audioSupported && !beep4.paused) {
@@ -224,9 +229,46 @@
                 }
 
 	}
+	function isCounterRunning() {	
+	        if(timerStarted < timerStopped) {
+	                return false;
+	        }
+	        var secs;
+		var secsSinceStart = (nowms-timerStarted)/1000;
+                var tl=timerLength;
+                if(interval) {
+                        return true;
+                }
+                if(!interval && timerMode !=2) {
+                        tl++;
+                }
+		switch(parseInt(timerMode)) {
+			case 1: // count down
+                                secs = Math.floor(tl-secsSinceStart);
+                                console.debug("secs:"+secs);
+                                if(secs > 0) {
+                                        return true;
+                                }
+				break;
+			case 2: // count up
+				secs = Math.floor(secsSinceStart);
+				if(secs <= tl) {
+				        return true;
+				}        
+				break;
+			case 3: // count down & up
+			case 4: // daytime
+                                return true;
+				break;
+		}
+		return false;
+	}
 	function timerStart(obj) {
 	        console.debug("timerStart");
-	        $.get('timerStart', { 'uuid': selectedTimer.uuid});
+	        if(!isCounterRunning()) {
+        	        $.get('timerStart', { 'uuid': selectedTimer.uuid,
+                                              'lastChanged': selectedTimer.lastChanged});
+                }
 	}
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged");
@@ -246,7 +288,6 @@
         	        	$('body').css('background-color', selectedTimer.bgcolor);
         	        	$('#timer').css('background-color', selectedTimer.bgcolor);
         	        	$('html').css('background-color', selectedTimer.bgcolor);
-        	        	
                         } else {
         	        	$('body').css('background-color', bgcolor);
         	        	$('#timer').css('background-color', bgcolor);
