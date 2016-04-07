@@ -167,6 +167,7 @@
                                               .done( function(data) {
                                                       toastr.success('URL pushed');
                                         });
+                toastr.success('Pushed');
   	}
   	function push(sel) {
                 pushAPI(selectedTimer, 0);

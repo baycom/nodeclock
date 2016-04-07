@@ -327,6 +327,8 @@
                 } else {
                         stopTimer();
                 }
+                $("#restart").hide();
+                $("#timers").hide();
                 resizeTimer();
 	}
 	socket.on('timersChanged', function (data) {
