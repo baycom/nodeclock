@@ -133,25 +133,37 @@
 	
 		switch(timerMode) {
 			case 1: // count down
-				if(interval) {
-                                        secs = Math.floor(secsSinceStart)%tl;
-                                        secs = tl - secs -1;
-				} else {
-                                        secs = Math.floor(tl-secsSinceStart);
-					secs = (secs > 0)?secs:0;
-				}
+			        if(stopped) {
+			                secs=tl-(interval?0:1);
+			        } else {
+        				if(interval) {
+                                                secs = Math.floor(secsSinceStart)%tl;
+                                                secs = tl - secs -1;
+	        			} else {
+                                                secs = Math.floor(tl-secsSinceStart);
+			        		secs = (secs > 0)?secs:0;
+                                        }
+                                }
 				break;
 			case 2: // count up
-				secs = Math.floor(secsSinceStart);
-				if(interval) {
-					secs %=tl;
-					secs = Math.abs(secs);
-				}
-				secs = (secs <= tl)?secs:tl;
+			        if(stopped) {
+			                secs = 0;
+                                } else {
+        				secs = Math.floor(secsSinceStart);
+	        			if(interval) {
+		        			secs %=tl;
+			        		secs = Math.abs(secs);
+                                        }
+                                        secs = (secs <= tl)?secs:tl;
+                                }
 				break;
 			case 3: // count down & up
-				secs = Math.floor(tl-secsSinceStart);
-				secs = Math.abs(secs);
+			        if(stopped) {
+			                secs = tl;
+                                } else {
+        				secs = Math.floor(tl-secsSinceStart);
+	        			secs = Math.abs(secs);
+                                }
 				break;
 		}
 		if(stopped) {
@@ -187,13 +199,27 @@
 		}
 		if(audioSupported) {
         		if(timerSounds>0) {
-	        	        if(secs == 5 && beep4.paused) {
-        	        	        beep4.play();
-        	        	        }
+        		        if(timerMode == 1 || timerMode == 3) {
+        	        	        if(secs == 5 && beep4.paused) {
+                	        	        beep4.play();
+        	                	        }
+                                } 
+                                if(timerMode == 2) {
+                                        if(timerLength-secs == 5 && beep4.paused) {
+                                                beep4.play();       
+                                        }
+                                }
         		}
 	        	if(timerSounds == 2) {
-		                if(secs == 60 && beep1.paused) {
-        		                beep1.play();
+	        	        if(timerMode == 1 || timerMode == 3) {
+        		                if(secs == 60 && beep1.paused) {
+                		                beep1.play();
+                                        }
+                                }
+                                if(timerMode ==2) {
+                                        if(timerLength-secs == 60 && beep1.paused) {
+                                                beep1.play();       
+                                        }
                                 }
         		} 
                 }
@@ -208,7 +234,7 @@
 	function startTimer() {
 	        displayTimer();
                 if(audioSupported && timerMode < 4 && timerSounds > 0 && beep1.paused) {
-                        if((interval && secs == timerLength-1) ||  (!interval && secs == timerLength)) {
+                        if((interval && secs == timerLength-1) ||  (!interval && secs == timerLength) || (timerMode == 2 && secs == 0)) {
                                 beep1.play();
                         }
                 }
