@@ -158,7 +158,21 @@
 		}
 		return false;
 	}
-  	
+  	function pushAPI(url, embed) {
+  	        console.debug("Push");
+  		$.get('pushURL', { 'url': url,
+                                   'embed': embed})
+                                              .done( function(data) {
+                                                      toastr.success('URL pushed');
+                                        });
+  	}
+  	function push(sel) {
+                pushAPI('timer?uuid='+selectedTimer, 0);
+  	}
+  	function pushURL(sel) {
+                var url=prompt("URL:","");
+                pushAPI('<iframe src="'+url+'" scrolling="auto" frameborder="0" width="1280" height="800" allowfullscreen></iframe>',1);
+  	}
 	function timerStart(sel) {
 	        if(!isCounterRunning()) {
 		        $("#timerStarted").val($.now()+timeSkew);
@@ -170,7 +184,7 @@
                 }
         }
 	function timerResume(sel) {
-		$("#timerStarted").val($.now()+timeSkew);
+		$("#timerResumed").val($.now()+timeSkew);
 		$.get('timerResume', { 'uuid': selectedTimer,
                                        'lastChanged': timer.lastChanged})
 			.done( function(data) {
@@ -269,6 +283,8 @@
                                 $("#add").hide();
                                 $("#stop").hide();
                                 $("#resume").hide();
+                                $("#push").hide();
+                                $("#pushURL").hide();
                                 $("#enable").hide();
                                 $("#disable").hide();
                                 $("#timerParms").hide();
@@ -279,6 +295,8 @@
                                 $("#add").show();
                                 $("#stop").show();
                                 $("#resume").show();
+                                $("#push").show();
+                                $("#pushURL").show();
                                 $("#enable").show();
                                 $("#disable").show();
                                 $("#timerSelector").show();

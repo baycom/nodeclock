@@ -296,6 +296,18 @@
                                               'lastChanged': selectedTimer.lastChanged});
                 }
 	}
+        socket.on('pushURL', function (data) {
+                var url=data.url;
+                var embed=parseInt(data.embed);
+                console.debug("pushURL: "+url+" embed: "+embed);
+                stopTimer();
+                if(embed) {
+                        $('#timer').css('top', 0);
+                        $('#timer').html(url);
+                } else {
+                        window.location.replace(url);
+                }
+        });
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged");
 		fillSelect(data);
@@ -337,6 +349,7 @@
 		} else {
 			$("#timers").show();
 		}
+		resizeTimer();
         });
 	socket.on('prefsChanged', function (data) {
                 timeSkew = $.now()-data.rtc;
