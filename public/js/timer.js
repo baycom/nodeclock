@@ -166,9 +166,6 @@
                                 }
 				break;
 		}
-		if(stopped) {
-//		        secs = 0;
-		}
 		hours = Math.floor(secs/3600);
 		minutes = Math.floor(secs/60)%60;
 		seconds = secs%60;
@@ -296,50 +293,44 @@
                                               'lastChanged': selectedTimer.lastChanged});
                 }
 	}
+	function updateTimer(uuid) {
+                timerByUUID(uuid);
+                timerStarted = parseInt(selectedTimer.timerStarted);
+                timerStopped = parseInt(selectedTimer.timerStopped);
+                timerEnabled = parseInt(selectedTimer.timerEnabled);
+                timerFormat = parseInt(selectedTimer.timerFormat);
+                timerLength = parseTime(selectedTimer.timerLength);
+                timerMode = parseInt(selectedTimer.timerMode);
+                timerSounds = parseInt(selectedTimer.timerSounds);
+                interval = parseInt(selectedTimer.timerOperation)==2?1:0;
+                if(!bgcolor) {
+                        $('body').css('background-color', selectedTimer.bgcolor);
+                        $('#timer').css('background-color', selectedTimer.bgcolor);
+                        $('html').css('background-color', selectedTimer.bgcolor);
+                } else {
+                        $('body').css('background-color', bgcolor);
+                        $('#timer').css('background-color', bgcolor);
+                        $('html').css('background-color', bgcolor);
+                }
+                if(!fgcolor) {
+                        $('body').css('color', selectedTimer.fgcolor);
+                } else {
+                        $('body').css('color', fgcolor);
+                }
+                if(timerEnabled) {
+                        enableTimer();
+                } else {
+                        disableTimer();
+                }
+                if(timerStarted > timerStopped) {
+                        startTimer();
+                } else {
+                        stopTimer();
+                }
+                resizeTimer();
+	}
 	socket.on('timersChanged', function (data) {
-		console.debug("timersChanged");
-		fillSelect(data);
-		if(uuid) {
-			timerByUUID(uuid);
-			timerStarted = parseInt(selectedTimer.timerStarted);
-			timerStopped = parseInt(selectedTimer.timerStopped);
-			timerEnabled = parseInt(selectedTimer.timerEnabled);
-			timerFormat = parseInt(selectedTimer.timerFormat);
-        		timerLength = parseTime(selectedTimer.timerLength);
-	        	timerMode = parseInt(selectedTimer.timerMode);
-	        	timerSounds = parseInt(selectedTimer.timerSounds);
-	        	interval = parseInt(selectedTimer.timerOperation)==2?1:0;
-	        	console.debug("length:"+timerLength);
-	        	if(!bgcolor) {
-        	        	$('body').css('background-color', selectedTimer.bgcolor);
-        	        	$('#timer').css('background-color', selectedTimer.bgcolor);
-        	        	$('html').css('background-color', selectedTimer.bgcolor);
-                        } else {
-        	        	$('body').css('background-color', bgcolor);
-        	        	$('#timer').css('background-color', bgcolor);
-        	        	$('html').css('background-color', bgcolor);
-                        }
-                        if(!fgcolor) {
-        	        	$('body').css('color', selectedTimer.fgcolor);
-                        } else {
-                                $('body').css('color', fgcolor);
-                        }
-                        if(timerEnabled) {
-                                enableTimer();
-                        } else {
-                                disableTimer();
-                        }
-			if(timerStarted > timerStopped) {
-				startTimer();
-			} else {
-				stopTimer();
-			}
-		} else {
-			$("#timers").show();
-		}
-		resizeTimer();
-        });
-	socket.on('prefsChanged', function (data) {
+		console.debug("timersChanged"+data);
 	        if(data.rtc) {
                         timeSkew = $.now()-data.rtc;
                         $("#debug").text("skew: "+timeSkew+"ms");
@@ -355,9 +346,18 @@
                                 $('#timer').css('top', 0);
                                 $('#timer').html(url);
                         } else {
-                                window.location.replace(url);
+                                uuid=url;
+                                updateTimer(uuid);
                         }
                 }	
+                if(Array.isArray(data)) {
+                        fillSelect(data);
+	        	if(uuid) {
+        		        updateTimer(uuid);
+        		} else {
+	        		$("#timers").show();
+                        }
+                }
         });
 	function getWidthOfText(txt, fontname, fontsize){
 		var c=document.createElement('canvas');

@@ -8,8 +8,13 @@ function now() {
 }
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/manage', function(req, res, next) {
   res.render('index', { title: 'Timer Setup' });
+});
+
+router.get('/', function(req, res, next) {
+  res.writeHead(301, {Location: 'timer'});
+  res.end();
 });
 
 router.get('/timer', function(req, res, next) {
@@ -52,7 +57,7 @@ router.get('/timerSet', function(req, res, next) {
           var json=www.storage.valuesWithKeyMatch(/uuid-/);
           res.send(json);
           var prefs = { rtc: (new Date()).getTime() };
-          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', prefs); 
           www.send('timersChanged', json);
         });
     }
@@ -70,7 +75,7 @@ router.get('/timerStart', function(req, res, next) {
           var json=www.storage.valuesWithKeyMatch(/uuid-/);
           res.send(json);
           var prefs = { rtc: (new Date()).getTime() };
-          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', prefs); 
           www.send('timersChanged', json);
         });
       }
@@ -89,7 +94,7 @@ router.get('/timerStop', function(req, res, next) {
           var json=www.storage.valuesWithKeyMatch(/uuid-/);
           res.send(json);
           var prefs = { rtc: (new Date()).getTime() };
-          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', prefs); 
           www.send('timersChanged', json);
         });
       }
@@ -108,7 +113,7 @@ router.get('/timerEnable', function(req, res, next) {
           var json=www.storage.valuesWithKeyMatch(/uuid-/);
           res.send(json);
           var prefs = { rtc: (new Date()).getTime() };
-          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', prefs); 
           www.send('timersChanged', json);
         });
       }
@@ -127,7 +132,7 @@ router.get('/timerDisable', function(req, res, next) {
           var json=www.storage.valuesWithKeyMatch(/uuid-/);
           res.send(json);
           var prefs = { rtc: (new Date()).getTime() };
-          www.send('prefsChanged', prefs); 
+          www.send('timersChanged', prefs); 
           www.send('timersChanged', json);
         });
       }
@@ -135,7 +140,7 @@ router.get('/timerDisable', function(req, res, next) {
   });
 });
 router.get('/pushURL', function(req, res, next) {
-  www.send('prefsChanged', req.query);
+  www.send('timersChanged', req.query);
 });
 
 module.exports = router;

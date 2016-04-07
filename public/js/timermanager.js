@@ -24,13 +24,15 @@
   		"hideMethod": "fadeOut"
 	}
 	socket.on('timersChanged', function (data) {
-		console.debug("timersChanged");
-		fillSelect(data);
-         });
-	socket.on('prefsChanged', function (data) {
-                timeSkew = $.now()-data.rtc;
-		console.debug("prefsChanged / timeSkew:" + timeSkew);
-		changeSettings(data);
+		console.debug("timersChanged: "+data);
+		if(data.rtc) {
+                        timeSkew = $.now()-data.rtc;
+	        	console.debug("prefsChanged / timeSkew:" + timeSkew);
+	        	changeSettings(data);
+		} 
+		if(Array.isArray(data)) {
+        		fillSelect(data);
+                }
          });
         
 	function fillSelect(data) {
@@ -112,7 +114,7 @@
 		if(selectedTimer == -1) {
 		        $("#preview").html('');
 		} else {
-                        $("#preview").html('<iframe width="300" height="150" style="-webkit-transform:scale(1.0);-moz-transform-scale(1.0);" src="timer?uuid='+selectedTimer+'" frameborder="1"></iframe><p><a href="timer?uuid='+selectedTimer+'" target="timer">Fullscreen</a>');
+                        $("#preview").html('<iframe width="300" height="150" style="-webkit-transform:scale(1.0);-moz-transform-scale(1.0);" src="timer?uuid='+selectedTimer+'" frameborder="1"></iframe><p><a href="timer?uuid='+selectedTimer+'" target="timer1">Fullscreen</a>');
                 }
   	}
 	function parseTime(timeStr) {
@@ -167,10 +169,15 @@
                                         });
   	}
   	function push(sel) {
-                pushAPI('timer?uuid='+selectedTimer, 0);
+                pushAPI(selectedTimer, 0);
   	}
   	function pushURL(sel) {
                 var url=prompt("URL:","");
+                var prefix = 'http://';
+                if (url.substr(0, prefix.length) !== prefix)
+                {
+                        url = prefix + url;
+                }
                 pushAPI('<iframe src="'+url+'" scrolling="auto" frameborder="0" width="1280" height="800" allowfullscreen></iframe>',1);
   	}
 	function timerStart(sel) {
