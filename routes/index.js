@@ -135,7 +135,7 @@ router.get('/timerDisable', function(req, res, next) {
   });
 });
 router.get('/pushURL', function(req, res, next) {
-  www.send('pushURL', req.query);
+  www.send('prefsChanged', req.query);
 });
 
 module.exports = router;

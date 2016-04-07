@@ -296,18 +296,6 @@
                                               'lastChanged': selectedTimer.lastChanged});
                 }
 	}
-        socket.on('pushURL', function (data) {
-                var url=data.url;
-                var embed=parseInt(data.embed);
-                console.debug("pushURL: "+url+" embed: "+embed);
-                stopTimer();
-                if(embed) {
-                        $('#timer').css('top', 0);
-                        $('#timer').html(url);
-                } else {
-                        window.location.replace(url);
-                }
-        });
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged");
 		fillSelect(data);
@@ -352,10 +340,24 @@
 		resizeTimer();
         });
 	socket.on('prefsChanged', function (data) {
-                timeSkew = $.now()-data.rtc;
-                $("#debug").text("skew: "+timeSkew+"ms");
-		console.debug("prefsChanged / timeSkew:" + timeSkew);
-		timerPrefs = data;	
+	        if(data.rtc) {
+                        timeSkew = $.now()-data.rtc;
+                        $("#debug").text("skew: "+timeSkew+"ms");
+                        console.debug("prefsChanged / timeSkew:" + timeSkew);
+                        timerPrefs = data;
+                }
+                if(data.url) {
+                        var url=data.url;
+                        var embed=parseInt(data.embed);
+                        console.debug("pushURL: "+url+" embed: "+embed);
+                        stopTimer();
+                        if(embed) {
+                                $('#timer').css('top', 0);
+                                $('#timer').html(url);
+                        } else {
+                                window.location.replace(url);
+                        }
+                }	
         });
 	function getWidthOfText(txt, fontname, fontsize){
 		var c=document.createElement('canvas');
