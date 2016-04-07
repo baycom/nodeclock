@@ -23,6 +23,7 @@
 	var beep4;
 	var audioSupported=false;
 	var intervalTimer = null;
+	var urlLoaded = false;
 
 	toastr.options = {
   		"closeButton": false,
@@ -347,17 +348,22 @@
                         if(embed) {
                                 $('#timer').css('top', 0);
                                 $('#timer').html(url);
+                                urlLoaded=true;
                         } else {
                                 uuid=url;
                                 updateTimer(uuid);
                         }
+                        $("#timers").hide();
                 }	
+                console.debug("urlLoaded "+urlLoaded);
                 if(Array.isArray(data)) {
                         fillSelect(data);
 	        	if(uuid) {
         		        updateTimer(uuid);
         		} else {
-	        		$("#timers").show();
+        		        if(!urlLoaded) {
+                                        $("#timers").show();
+                                }
                         }
                 }
         });

@@ -13,6 +13,9 @@ function sendUpdate(res) {
   var prefs = { rtc: now() };
   www.send('timersChanged', prefs); 
   www.send('timersChanged', json);
+  var cat = prefs+json;
+  console.log("sendUpdate");
+  console.log(util.inspect(cat, false, null));
 }
 
 /* GET home page. */
@@ -151,6 +154,7 @@ router.get('/timerDisable', function(req, res, next) {
 router.get('/pushURL', function(req, res, next) {
   console.log("/pushURL");
   www.send('timersChanged', req.query);
+  res.end();
 });
 
 module.exports = router;
