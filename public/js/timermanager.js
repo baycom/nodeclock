@@ -167,7 +167,6 @@
                                               .done( function(data) {
                                                       toastr.success('URL pushed');
                                         });
-                toastr.success('Pushed');
   	}
   	function push(sel) {
                 pushAPI(selectedTimer, 0);
@@ -179,7 +178,7 @@
                 {
                         url = prefix + url;
                 }
-                pushAPI('<iframe src="'+url+'" scrolling="auto" frameborder="0" width="1280" height="800" allowfullscreen></iframe>',1);
+                pushAPI('<iframe src="'+url+'" scrolling="auto" frameborder="0" width="%width%" height="%height%" allowfullscreen></iframe>',1);
   	}
 	function timerStart(sel) {
 	        if(!isCounterRunning()) {

@@ -347,6 +347,10 @@
                         stopTimer();
                         if(embed) {
                                 $('#timer').css('top', 0);
+                                var width=$(window).width();
+                                var height=$(window).height();
+                                url=url.replace(/%width%/, width).replace(/%height%/, height);
+                                console.debug(url);
                                 $('#timer').html(url);
                                 urlLoaded=true;
                         } else {
@@ -400,6 +404,7 @@
                 $("#timer").click(function() {
                         if (BigScreen.enabled) {
                                 BigScreen.toggle();
+                                resizeTimer();
                         }
                         return false;
                 });
