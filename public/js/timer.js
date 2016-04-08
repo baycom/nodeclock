@@ -100,8 +100,8 @@
         function timerSelected(sel) {
                 uuid = sel.value;
                 $("#timers").hide();
-		var myURL = document.location;
-		document.location = myURL + "?uuid="+uuid;
+                updateTimer(uuid);
+                window.history.pushState("", "", 'timer?uuid='+uuid);
         }
 	function renderDaytime() {
 		var now = new Date (nowms);
@@ -352,6 +352,7 @@
                         } else {
                                 uuid=url;
                                 updateTimer(uuid);
+                                window.history.pushState("", "", 'timer?uuid='+uuid);
                         }
                         $("#timers").hide();
                 }	
