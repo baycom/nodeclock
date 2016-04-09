@@ -288,7 +288,7 @@
                                 $("#preview").hide();
                                 $("#preview").html("");
                                 $("#add").hide();
-                                $("#stop").hide();
+//                                $("#stop").hide();
                                 $("#resume").hide();
                                 $("#push").hide();
                                 $("#pushURL").hide();
@@ -300,7 +300,7 @@
                                 $("#hide").html("Hide");
                                 $("#preview").show();
                                 $("#add").show();
-                                $("#stop").show();
+//                                $("#stop").show();
                                 $("#resume").show();
                                 $("#push").show();
                                 $("#pushURL").show();
