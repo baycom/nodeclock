@@ -316,5 +316,7 @@
                 $("#disable").click(function() {
                         timerEnable(false);
                 });
+                document.title = "Manage "+ window.location.hostname;
+                $("#headline").text("Manage "+ window.location.hostname);
         });
         
