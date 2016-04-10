@@ -21,7 +21,8 @@ function sendUpdate(res) {
 /* GET home page. */
 router.get('/manage', function(req, res, next) {
   console.log("/manage");
-  res.render('index', { title: 'Timer Setup' });
+  var pjson = require('../package.json');
+  res.render('index', { title: 'Timer Setup', version: pjson.version });
 });
 
 router.get('/', function(req, res, next) {
