@@ -21,6 +21,11 @@ div {
 	display: inline;
 }
 
+#delete {
+	position: relative;
+	left: 118px;
+}
+
 #timer {
 	position: relative;
 	display: table;
