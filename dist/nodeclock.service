@@ -1,0 +1,15 @@
+[Unit]
+Description=Node Clock
+After=remote-fs.target
+
+[Service]
+WorkingDirectory=/usr/local/lib/node_modules/nodeclock
+Environment=PORT=80 
+ExecStart=/usr/local/lib/node_modules/nodeclock/bin/www
+ExecReload=/usr/bin/killall -HUP node
+ExecStop=/usr/bin/killall node
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
