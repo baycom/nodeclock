@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="js/timermanager.js"></script>
   </head>
   <body>
-	<h1><%= title %></h1>
+	<h1 id="headline"><%= title %></h1>
 	<div style="display: none" id="serverok">
 	    <div id="preview">
             </div>
@@ -34,8 +34,8 @@
 		    <button id="disable">Hide Timer</button>
 		    <button id="hide">Hide</button>
 		    <button id="push" onclick="push(this);">Push</button>
-		    <button id="pushURL" onclick="pushURL(this);">PushURL</button>
 	    </div>
+	    <button id="pushURL" onclick="pushURL(this);">PushURL</button>
             <p>
 	    <p>
 	    <button id="add" onclick="timerAdd(this);">Add/Modify Timer</button>
@@ -108,6 +108,8 @@
 		<input id="uuid" name="uuid" type="hidden">
 		</form>
 		<button id="submit" onclick="timerSet(this);">Add/Update</button>
+		<p>
+		Version <%= version %> by BayCom GmbH
             </div>
 	</div>
   </body>

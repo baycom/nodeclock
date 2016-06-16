@@ -167,7 +167,6 @@
                                               .done( function(data) {
                                                       toastr.success('URL pushed');
                                         });
-                toastr.success('Pushed');
   	}
   	function push(sel) {
                 pushAPI(selectedTimer, 0);
@@ -179,7 +178,7 @@
                 {
                         url = prefix + url;
                 }
-                pushAPI('<iframe src="'+url+'" scrolling="auto" frameborder="0" width="1280" height="800" allowfullscreen></iframe>',1);
+                pushAPI('<iframe src="'+url+'" scrolling="auto" frameborder="0" width="%width%" height="%height%" allowfullscreen></iframe>',1);
   	}
 	function timerStart(sel) {
 	        if(!isCounterRunning()) {
@@ -289,7 +288,7 @@
                                 $("#preview").hide();
                                 $("#preview").html("");
                                 $("#add").hide();
-                                $("#stop").hide();
+//                                $("#stop").hide();
                                 $("#resume").hide();
                                 $("#push").hide();
                                 $("#pushURL").hide();
@@ -301,7 +300,7 @@
                                 $("#hide").html("Hide");
                                 $("#preview").show();
                                 $("#add").show();
-                                $("#stop").show();
+//                                $("#stop").show();
                                 $("#resume").show();
                                 $("#push").show();
                                 $("#pushURL").show();
@@ -317,5 +316,7 @@
                 $("#disable").click(function() {
                         timerEnable(false);
                 });
+                document.title = "Manage "+ window.location.hostname;
+                $("#headline").text("Manage "+ window.location.hostname);
         });
         

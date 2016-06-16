@@ -14,10 +14,16 @@ a {
 
 button, input, select, textarea {
   color: #000;
+  margin: 10px;
 }
 
 div {
 	display: inline;
+}
+
+#delete {
+	position: relative;
+	left: 118px;
 }
 
 #timer {
