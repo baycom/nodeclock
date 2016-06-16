@@ -14,9 +14,8 @@ sudo systemctl daemon-reload
 
 sudo systemctl start nodeclock
 
-Now you have installed the nodeclock service an you can point you local browser to http://localhost/manage
+Now you have installed the nodeclock service and you can point you local browser to http://localhost/manage
 
 On a Raspbian system you might want to install firefox:
 
 sudo apt-get install iceweasel
-
