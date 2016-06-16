@@ -14,7 +14,8 @@ sudo systemctl daemon-reload
 
 sudo systemctl start nodeclock
 
-Now you have installed the nodeclock service and you can point you local browser to http://localhost/manage
+Now you have installed the nodeclock service and you can point your local browser to http://localhost/manage
+If you know the ip address or the network name of the nodeclock system you should be able to access the Manage page from everywhere you like. 
 
 On a Raspbian system you might want to install firefox:
 
