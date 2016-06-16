@@ -19,3 +19,8 @@ Now you have installed the nodeclock service and you can point you local browser
 On a Raspbian system you might want to install firefox:
 
 sudo apt-get install iceweasel
+
+To update nodeclock simply call the install command again:
+
+sudo npm install --global git://github.com/baycom/nodeclock.git
+
