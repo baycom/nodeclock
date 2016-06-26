@@ -4,6 +4,8 @@ Installation procedure (Debian/Ubuntu/Raspbian)
 
 Login in to a console:
 
+sudo apt-get update
+
 sudo apt-get install nodejs nodejs-legacy npm ntp git
 
 sudo npm install --global git://github.com/baycom/nodeclock.git
