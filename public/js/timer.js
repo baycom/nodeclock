@@ -409,9 +409,10 @@
                         return false;
                 });
                 var a = document.createElement('audio');
-                if (!!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''))) {
-        	        beep1 = new Audio("media/beep-1.mp3");
-        	        beep4 = new Audio("media/countdown.mp3");
+                console.debug("a.canPlayType:"+a.canPlayType+"audio/ogg:"+a.canPlayType('audio/ogg;'));
+                if (!!(a.canPlayType && a.canPlayType('audio/ogg;').replace(/no/, ''))) {
+        	        beep1 = new Audio("media/beep-1.ogg");
+        	        beep4 = new Audio("media/countdown.ogg");
         	        audioSupported = true;
                 }
                 $("body").css('overflow', 'hidden');
