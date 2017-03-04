@@ -27,4 +27,6 @@ sudo npm install --global git://github.com/baycom/nodeclock.git
 
 On a Raspbian system you might want to start Chromium in fullscreen mode on startup:
 
-sudo cp /usr/local/lib/node_modules/nodeclock/dist/chromium-browser.desktop ~/.config/autostart/
+mkdir -p ~/.config/autostart/
+
+cp /usr/local/lib/node_modules/nodeclock/dist/chromium-browser.desktop ~/.config/autostart/
