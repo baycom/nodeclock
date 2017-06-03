@@ -335,8 +335,8 @@
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged"+data);
 	        if(data.rtc) {
-                        timeSkew = $.now()-data.rtc;
-                        $("#debug").text("skew: "+timeSkew+"ms");
+                        // timeSkew = $.now()-data.rtc;
+                        //$("#debug").text("skew: "+timeSkew+"ms");
                         console.debug("prefsChanged / timeSkew:" + timeSkew);
                         timerPrefs = data;
                 }

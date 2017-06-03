@@ -26,8 +26,8 @@
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged: "+data);
 		if(data.rtc) {
-                        timeSkew = $.now()-data.rtc;
-	        	console.debug("prefsChanged / timeSkew:" + timeSkew);
+//                        timeSkew = $.now()-data.rtc;
+//	        	console.debug("prefsChanged / timeSkew:" + timeSkew);
 	        	changeSettings(data);
 		} 
 		if(Array.isArray(data)) {
