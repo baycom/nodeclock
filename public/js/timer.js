@@ -24,6 +24,7 @@
 	var audioSupported=false;
 	var intervalTimer = null;
 	var urlLoaded = false;
+	var ignorepush = false;
 
 	toastr.options = {
   		"closeButton": false,
@@ -340,7 +341,7 @@
                         console.debug("prefsChanged / timeSkew:" + timeSkew);
                         timerPrefs = data;
                 }
-                if(data.url) {
+                if(data.url && !ignorepush) {
                         var url=data.url;
                         var embed=parseInt(data.embed);
                         console.debug("pushURL: "+url+" embed: "+embed);
@@ -419,6 +420,7 @@
                 uuid = QueryString.uuid;
                 bgcolor = QueryString.bgcolor;
                 fgcolor = QueryString.fgcolor;
+                ignorepush = QueryString.ignorepush;
                 resizeTimer();
         }); 
           
