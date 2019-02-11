@@ -26,8 +26,8 @@
 	socket.on('timersChanged', function (data) {
 		console.debug("timersChanged: "+data);
 		if(data.rtc) {
-//                        timeSkew = $.now()-data.rtc;
-//	        	console.debug("prefsChanged / timeSkew:" + timeSkew);
+                        timeSkew = $.now()-data.rtc;
+	        	console.debug("prefsChanged / timeSkew:" + timeSkew);
 	        	changeSettings(data);
 		} 
 		if(Array.isArray(data)) {
@@ -182,6 +182,7 @@
   	}
 	function timerStart(sel) {
 	        if(!isCounterRunning()) {
+	        	navigator.vibrate([500]);
 		        $("#timerStarted").val($.now()+timeSkew);
 		        $.get('timerStart', { 'uuid': selectedTimer, 
                                               'lastChanged': timer.lastChanged})
@@ -199,6 +200,7 @@
 			});
   	}
 	function timerStop(sel) {
+		navigator.vibrate([500]);
 		$("#timerStopped").val($.now()+timeSkew);
 		$.get('timerStop', { 'uuid': selectedTimer,
                                      'lastChanged': timer.lastChanged})
@@ -207,6 +209,7 @@
 			});
   	}
 	function timerEnable(enabled) {
+		navigator.vibrate([500]);
 	        console.debug("timerEnable:"+enabled);
 		$("#timerEnabled").val(enabled);
 		if(enabled) {
