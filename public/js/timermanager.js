@@ -5,6 +5,14 @@
 	var timeSkew = 0;
 	var hideGUI = false;
 	var timer;
+
+	navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+
+	function vibrate(length) {
+		if (navigator.vibrate) {
+			navigator.vibrate([length]);
+		}
+	}
 	
 	toastr.options = {
   		"closeButton": false,
@@ -182,7 +190,7 @@
   	}
 	function timerStart(sel) {
 	        if(!isCounterRunning()) {
-	        	navigator.vibrate([500]);
+                        vibrate(500);
 		        $("#timerStarted").val($.now()+timeSkew);
 		        $.get('timerStart', { 'uuid': selectedTimer, 
                                               'lastChanged': timer.lastChanged})
@@ -200,7 +208,7 @@
 			});
   	}
 	function timerStop(sel) {
-		navigator.vibrate([500]);
+		vibrate(500);
 		$("#timerStopped").val($.now()+timeSkew);
 		$.get('timerStop', { 'uuid': selectedTimer,
                                      'lastChanged': timer.lastChanged})
@@ -209,7 +217,7 @@
 			});
   	}
 	function timerEnable(enabled) {
-		navigator.vibrate([500]);
+		vibrate(500);
 	        console.debug("timerEnable:"+enabled);
 		$("#timerEnabled").val(enabled);
 		if(enabled) {
