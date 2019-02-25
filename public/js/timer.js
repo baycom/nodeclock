@@ -238,7 +238,7 @@
                         }
                 }
                 if(!intervalTimer) {
-        		intervalTimer = setInterval(displayTimer, 300);
+                        intervalTimer = setInterval(displayTimer, 10);
                 }
 	}
 	function stopTimer() {

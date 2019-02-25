@@ -7,7 +7,7 @@ Login in to a console as user pi and then execute
 
 ```
 sudo apt-get update
-sudo apt-get install nodejs nodejs-legacy npm ntp git
+sudo apt-get install nodejs npm ntp git
 sudo npm install --global git://github.com/baycom/nodeclock.git
 sudo cp /usr/local/lib/node_modules/nodeclock/dist/nodeclock.service /etc/systemd/system/
 sudo systemctl daemon-reload
@@ -27,6 +27,7 @@ sudo npm install --global git://github.com/baycom/nodeclock.git
 ## On a Raspbian system you might want to start Chromium in fullscreen mode on startup:
 
 ```
+sudo apt-get install --no-install-recommends xserver-xorg xinit chromium-browser
 mkdir -p ~/.config/autostart/
 cp /usr/local/lib/node_modules/nodeclock/dist/chromium-browser.desktop ~/.config/autostart/
 ```
