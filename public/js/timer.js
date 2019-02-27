@@ -25,6 +25,7 @@
 	var intervalTimer = null;
 	var urlLoaded = false;
 	var ignorepush = false;
+	var oldTimeStr = null;
 
 	toastr.options = {
   		"closeButton": false,
@@ -185,6 +186,11 @@
 		if(hours < 10) hours = "0"+hours;
 		if(minutes < 10 && timerFormat < 4) minutes = "0"+minutes;
 		if(seconds < 10) seconds ="0"+seconds;
+                timeStr=hours+':'+minutes+':'+seconds;
+                if(oldTimeStr == timeStr) {
+                        return;
+                }
+                oldTimeStr = timeStr;
 		
 		switch(timerFormat) {
 		        case 4:	minutes+=+hours*60;
