@@ -182,7 +182,7 @@
   	function pushURL(sel) {
                 var url=prompt("URL:","");
                 var prefix = 'http://';
-                if (url.substr(0, prefix.length) !== prefix)
+                if (!url.match(/^http/))	// do NOT prefix https:// urls
                 {
                         url = prefix + url;
                 }
