@@ -417,7 +417,7 @@
                 });
                 var a = document.createElement('audio');
                 console.debug("a.canPlayType:"+a.canPlayType+"audio/ogg:"+a.canPlayType('audio/ogg;'));
-                if (!!(a.canPlayType && a.canPlayType('audio/ogg;').replace(/no/, ''))) {
+                if (!QueryString.noaudio && !!(a.canPlayType && a.canPlayType('audio/ogg;').replace(/no/, ''))) {
         	        beep1 = new Audio("media/beep-1.ogg");
         	        beep4 = new Audio("media/countdown.ogg");
         	        audioSupported = true;
