@@ -16,6 +16,6 @@
     "morgan": "^1.9.1",
     "node-persist": "0.0.8",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.4.0"
   }
 }
