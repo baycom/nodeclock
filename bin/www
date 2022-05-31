@@ -98,7 +98,8 @@ storage.forEach(function(key, value) {
   console.log("key:"+key+" value:"+value);
 });
 
-var io = require('socket.io').listen(server);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 var util = require('util');
 
