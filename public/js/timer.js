@@ -7,7 +7,9 @@
 	var timerMode;
 	var timerSounds;
 	var timerLength;
+	var timer2Length;
 	var timerEnabled;
+	var timerOperation;
 	var interval;
 	var nowms;
 	var secs;
@@ -112,6 +114,9 @@
 		seconds = now.getSeconds();
 	}
 	function parseTime(timeStr) {
+	        if(timeStr === undefined) {
+	                return 0;
+	        }
 		var t = timeStr.split(':');
 		if(timeStr.length > 5 ) {
 			return (+t[0]) * 60 * 60 + (+t[1]) * 60 + (+t[2]); 
@@ -123,17 +128,29 @@
 	function renderCounter(timerMode) {
 		var secsSinceStart = (nowms-timerStarted)/1000;
 		var stopped = timerStarted <= timerStopped;
+		var tl;
 
 		if(parseInt(selectedTimer.timerRestartButton)) {
                         $("#restart").show();
 		} else {
 		        $("#restart").hide();
 		}
-                var tl=timerLength;
+
+		if(timerOperation == 3) {
+		        var activeTimer=secsSinceStart%(timerLength+timer2Length);
+		        if(activeTimer < timerLength) {
+		                tl=timerLength;
+		        } else {
+		                tl=timer2Length;
+		        }
+		} else {
+		        tl=timerLength;
+		}
+
                 if(!interval && timerMode !=2) {
                         tl++;
                 }
-	
+
 		switch(timerMode) {
 			case 1: // count down
 			        if(stopped) {
@@ -308,9 +325,11 @@
                 timerEnabled = parseInt(selectedTimer.timerEnabled);
                 timerFormat = parseInt(selectedTimer.timerFormat);
                 timerLength = parseTime(selectedTimer.timerLength);
+                timer2Length = parseTime(selectedTimer.timer2Length);
                 timerMode = parseInt(selectedTimer.timerMode);
                 timerSounds = parseInt(selectedTimer.timerSounds);
-                interval = parseInt(selectedTimer.timerOperation)==2?1:0;
+                timerOperation = parseInt(selectedTimer.timerOperation)
+                interval = timerOperation>=2?1:0;
                 if(!bgcolor) {
                         $('body').css('background-color', selectedTimer.bgcolor);
                         $('#timer').css('background-color', selectedTimer.bgcolor);

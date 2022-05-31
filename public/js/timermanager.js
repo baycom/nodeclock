@@ -89,6 +89,7 @@
 			$("#timerStopped").val(timer.timerStopped);
 			$("#timerEnabled").val(timer.timerEnabled);
 			$("#timerLength").val(timer.timerLength);
+			$("#timer2Length").val(timer.timer2Length);
 			$("#timerFormat option").filter(function() {
 			    return $(this).val() == timer.timerFormat; 
 			}).prop('selected', true);
@@ -257,8 +258,9 @@
 	}
 	function timerSet(obj) {
 		var val = $("#timerLength").val();
+		var val2 = $("#timer2Length").val();
 		var regexp = /(([01][0-9]|[02][0-3]):){0,1}[0-5][0-9]:[0-5][0-9]/;
-		if($("#timerMode").val() != 4 && !regexp.test(val) || !$("#timerName").val()) {
+		if($("#timerMode").val() != 4 && (!regexp.test(val) || !regexp.test(val2)) || !$("#timerName").val()) {
 			toastr.error("Please set a name and a length like HH:MM:SS");
 		} else {
 		        if(!timer || !timer.lastChanged) {
