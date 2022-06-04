@@ -301,7 +301,7 @@ function disableTimer() {
 function startTimer() {
 	displayTimer();
 	if (audioSupported && timerMode < 4 && timerSounds > 0) {
-		if ((interval && secs >= timerLength - 1) || (!interval && secs == timerLength) || (timerMode == 2 && secs == 0)) {
+		if ((interval && (secs == timerLength || secs == timerLength-1)) || (!interval && secs == timerLength) || (timerMode == 2 && secs == 0)) {
 			beep0();
 		}
 	}
