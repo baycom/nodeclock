@@ -7,7 +7,7 @@ Login in to a console as user pi and then execute
 
 ```
 sudo apt-get update
-sudo apt-get install nodejs npm ntp git
+sudo apt-get install nodejs npm git
 sudo npm install --global https://github.com/baycom/nodeclock.git
 sudo cp /usr/local/lib/node_modules/nodeclock/dist/nodeclock.service /etc/systemd/system/
 sudo systemctl daemon-reload
